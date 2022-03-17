@@ -71,7 +71,9 @@ def draw_arrow(window, start, control, target, color, radius):
 # selecter = pygame.BUTTON_LEFT
 mover = pygame.BUTTON_LEFT
 selecter = pygame.BUTTON_RIGHT
-deleter = pygame.K_DELETE
+
+def key_is_delete_action(key):
+    return key == pygame.K_DELETE or key == pygame.K_BACKSPACE
 
 while running:
     pygame.time.wait(10)
@@ -109,7 +111,7 @@ while running:
                             choice1 = None
                             choice2 = None
         if event.type == pygame.KEYDOWN:
-            if event.key == deleter:
+            if key_is_delete_action(event.key):
                 if choice1 is not None:
                     g.remove_node(choice1)
                     choice1 = None
