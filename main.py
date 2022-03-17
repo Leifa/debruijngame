@@ -67,6 +67,14 @@ def draw_arrow(window, start, control, target, color, radius):
     v2 = (lastpoint[0]-ARROW_TIP_LENGTH*u[0]-ARROW_TIP_WIDTH*normal[0], lastpoint[1]-ARROW_TIP_LENGTH*u[1]-ARROW_TIP_WIDTH*normal[1])
     pygame.draw.polygon(window, color, (lastpoint, v1, v2))
 
+# mover = pygame.BUTTON_RIGHT
+# selecter = pygame.BUTTON_LEFT
+mover = pygame.BUTTON_LEFT
+selecter = pygame.BUTTON_RIGHT
+
+def key_is_delete_action(key):
+    return key == pygame.K_DELETE or key == pygame.K_BACKSPACE
+
 while running:
     pygame.time.wait(10)
     window.fill(BACKGROUND)
@@ -76,13 +84,13 @@ while running:
             running = False
         # drag nodes
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == pygame.BUTTON_RIGHT:
+            if event.button == mover:
                 if selected_node is None:
                     for node in g.nodes:
                         if dist(event.pos, node.pos) < node.radius:
                             selected_node = node
         if event.type == pygame.MOUSEBUTTONUP:
-            if event.button == pygame.BUTTON_RIGHT:
+            if event.button == mover:
                 if selected_node is not None:
                     selected_node.pos = event.pos
                     selected_node = None
@@ -90,7 +98,7 @@ while running:
             if selected_node is not None:
                 selected_node.pos = event.pos
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == pygame.BUTTON_LEFT:
+            if event.button == selecter:
                 for node in g.nodes:
                     if dist(event.pos, node.pos) < node.radius:
                         if choice1 == None:
@@ -103,7 +111,7 @@ while running:
                             choice1 = None
                             choice2 = None
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_DELETE:
+            if key_is_delete_action(event.key):
                 if choice1 is not None:
                     g.remove_node(choice1)
                     choice1 = None
